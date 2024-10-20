@@ -2,12 +2,12 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 [![buymeacoffee_badge](https://img.shields.io/badge/Donate-buymeacoffe-ff813f?style=flat)](https://www.buymeacoffee.com/schilea)
 
-CCwGTVRemoteCard is a custom web component designed to act as a virtual remote control for Google TV. It integrates with Home Assistant to control Android TV devices, allowing you to navigate the interface, adjust the volume, and launch apps like YouTube and Netflix.
+Chromecast with Google TV Remote Card (CCwGTVRemoteCard) is a custom web component designed to act as a virtual remote control for Google TV. It integrates with Home Assistant to control Android TV devices, allowing you to navigate the interface, adjust the volume, and launch apps like YouTube and Netflix.
 
 This component leverages the Home Assistant Android TV Remote integration for seamless control of your Google TV or Android TV device.
 
 ## Prerequisites
-Before you can use the CCwGTVRemoteCard, you need to set up the Android TV Remote integration in Home Assistant:
+Before you can use the Chromecast with Google TV Remote Card (CCwGTVRemoteCard), you need to set up the Android TV Remote integration in Home Assistant:
 
 Set up the Home Assistant Android TV Remote Integration https://www.home-assistant.io/integrations/androidtv_remote/. 
 
@@ -31,13 +31,13 @@ Ensure your Chromecast with Google TV is properly integrated and working in Home
 You can install CCwGTVRemoteCard either manually or automatically via HACS.
 
 ### 1. Automatic Installation via HACS
-If you use the Home Assistant Community Store (HACS), follow these steps for an easy installation:
+If you use the Home Assistant Community Store (**HACS**), follow these steps for an easy installation:
 
-1. Open HACS in your Home Assistant dashboard.
-2. Go to Frontend.
-3. Click the three dots (⋮) in the upper-right corner, and choose Custom Repositories.
-4. Add this repository URL: https://github.com/schilea/ccwgtv-remote-card and select Lovelace as the category.
-5. Once added, search for CCwGTVRemoteCard in the HACS store and click Install.
+1. Open **HACS** in your Home Assistant dashboard.
+2. Go to **Frontend**.
+3. Click the three dots (**⋮**) in the upper-right corner, and choose Custom Repositories.
+4. Add this repository URL: **https://github.com/schilea/ccwgtv-remote-card** and select **Dashboard** as the category.
+5. Once added, search for **Chromecast with Google TV Remote Card** in the HACS store and click Install.
 6. After installation, go to **Settings** > **Dashboards** > Click the three dots (**⋮**) in the upper-right corner > **Resources** in Home Assistant.
 7. Check if the resource was automatically installed
 8. If not, Click the + **Add Resource** button.
@@ -48,7 +48,7 @@ If you use the Home Assistant Community Store (HACS), follow these steps for an 
 10. Restart Home Assistant to apply the changes.
 
 ### 2. Manual Installation
-1. Download the latest release from the Releases page https://github.com/schilea/ccwgtv-remote-card.
+1. Download the latest release from the Releases page **https://github.com/schilea/ccwgtv-remote-card**.
 2. Place the **.js** file in your Home Assistant **www/community/cwgtv-remote-card** folder.
 3. Add the following to your **lovelace** resources in the **configuration.yaml** file:
   ```yaml
@@ -57,7 +57,7 @@ resources:
     type: module
   ```
 ### Configure the Remote Card
-Once the card is installed, add it to your Lovelace dashboard by creating a custom card with the following configuration:
+Once the card is installed, add it to your **Lovelace** dashboard by creating a custom card with the following configuration:
 
 #### Configuration Options
 - **title**: The title of the card.
