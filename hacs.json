@@ -1,1 +1,7 @@
-
+{
+  "name": "Cromecast with Google TV Remote Card",
+  "description" : "virtual remote control for Chromecast with Google TV",
+  "content_in_root": false,
+  "filename": "ccwgtv-remote-card.js",
+  "render_readme" : true
+}
