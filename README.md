@@ -2,7 +2,7 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 [![buymeacoffee_badge](https://img.shields.io/badge/Donate-buymeacoffe-ff813f?style=flat)](https://www.buymeacoffee.com/schilea)
 
-Chromecast with Google TV Remote Card (CCwGTVRemoteCard) is a custom web component designed to act as a virtual remote control for Google TV. It integrates with Home Assistant to control Android TV devices, allowing you to navigate the interface, adjust the volume, and launch apps like YouTube and Netflix.
+Chromecast with Google TV Remote Card (CCwGTVRemoteCard) is a custom web component designed to act as a virtual remote control for Google TV. It integrates with Home Assistant to control Chromecast with Google TV devices, allowing you to navigate the interface, adjust the volume, and launch apps like YouTube and Netflix.
 
 This component leverages the Home Assistant Android TV Remote integration for seamless control of your Google TV or Android TV device.
 
