@@ -75,7 +75,7 @@ Add the card to your Lovelace dashboard with the necessary button mappings.
 The component will render a Google TV remote control.
 Clicking on a button triggers the corresponding action in your Home Assistant instance.
 
-#### Example
+#### Example of Lovelace Custom Card
   ```yaml
 type: custom:ccwgtv-remote-card
 title: Chromecast with Google TV Remote
