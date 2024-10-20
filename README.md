@@ -1,4 +1,4 @@
-# Cromecast with Google TV Remote Card
+# Chromecast with Google TV Remote Card
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 [![buymeacoffee_badge](https://img.shields.io/badge/Donate-buymeacoffe-ff813f?style=flat)](https://www.buymeacoffee.com/schilea)
 
