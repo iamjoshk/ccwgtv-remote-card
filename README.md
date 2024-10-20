@@ -211,19 +211,19 @@ volume_mute:
   domain: webostv
   service: button
   service_data:
-    entity_id: media_player.webos_tv_living_room
+    entity_id: media_player.living_room_tv
     button: MUTE
 volume_down:
   domain: webostv
   service: button
   service_data:
-    entity_id: media_player.webos_tv_living_room
+    entity_id: media_player.living_room_tv
     button: VOLUMEDOWN
 volume_up:
   domain: webostv
   service: button
   service_data:
-    entity_id: media_player.webos_tv_living_room
+    entity_id: media_player.living_room_tv
     button: VOLUMEUP
   ```
 ## Development
