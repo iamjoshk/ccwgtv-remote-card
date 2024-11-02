@@ -1,3 +1,11 @@
+window.customCards = window.customCards || [];
+window.customCards.push({
+    type: "ccwgtv-remote-card",
+    name: "CCwGTV Remote Card",
+    description: "A custom remote control for CCwGTV",
+    preview: true, // Optional: Enables a preview in the card picker
+});
+
 class CCwGTVRemoteCard extends HTMLElement {
     constructor() {
         super();
@@ -33,7 +41,7 @@ class CCwGTVRemoteCard extends HTMLElement {
             }
 
             .content {
-                padding: 16px;
+                padding: 5px;
                 position: relative;
             }
 
@@ -86,11 +94,16 @@ class CCwGTVRemoteCard extends HTMLElement {
         });
     }
 
+    // Method to return default configuration (optional)
+    static getStubConfig() {
+        return { title: "CCwGTV Remote", scale: 0.87, actions: "add below as per documentation" };
+    }
+
     setConfig(config) {
         this.config = config;
         
-		// Set default scale to 1.0 if not provided, and clamp it between 0.5 and 1.5
-		this.scale = Math.max(0.5, Math.min(this.config.scale || 1.0, 1.5));
+		// Set default scale to 0.87 if not provided, and clamp it between 0.5 and 1.5
+		this.scale = Math.max(0.5, Math.min(this.config.scale || 0.87, 1.5));
 
         if (!this.content) {
             const card = document.createElement('ha-card');
@@ -123,8 +136,8 @@ class CCwGTVRemoteCard extends HTMLElement {
             const parentWidth = this.content.clientWidth;
             const parentHeight = this.content.clientHeight;
 
-            const defaultWidth = 125;
-            const defaultHeight = 420;
+            const defaultWidth = 216;
+            const defaultHeight = 720;
             canvas.width = (parentWidth || defaultWidth) * this.scale;
             canvas.height = (parentHeight || defaultHeight) * this.scale;
 
@@ -170,8 +183,16 @@ class CCwGTVRemoteCard extends HTMLElement {
     }
 
     drawRemoteControl() {
-        this.content.innerHTML = '<canvas id="remoteCanvas" width="390" height="600"></canvas>';
-        const canvas = this.content.querySelector('#remoteCanvas');
+		// Create the canvas element with dynamic sizing
+		this.content.innerHTML = `<canvas id="remoteCanvas"></canvas>`;
+		const canvas = this.content.querySelector('#remoteCanvas');
+
+        const bodyWidth = 216 * this.scale;
+        const bodyHeight = bodyWidth * 10 / 3;
+		
+		// Set canvas width and height to match the remote's dimensions
+		canvas.width = bodyWidth;
+		canvas.height = bodyHeight;
         const ctx = canvas.getContext('2d');
 
         canvas.style.background = 'transparent';
@@ -180,8 +201,7 @@ class CCwGTVRemoteCard extends HTMLElement {
         const dpadColor = "#cccccc";
         const googleAssistantColor = "#555555";
 
-        const bodyWidth = 120 * this.scale;
-        const bodyHeight = bodyWidth * 10 / 3;
+
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
 
@@ -212,21 +232,29 @@ class CCwGTVRemoteCard extends HTMLElement {
             this.buttonRegions.push({ type: 'circle', x, y, radius, action });
         };
 
-        const drawVolumeButton = (x, y, width, height, iconKey, action, buttonIndex) => {
-            const opacity = this.buttonPressState[buttonIndex]?.opacity || 1.0;
-            ctx.globalAlpha = opacity; // Set button opacity
-            ctx.fillStyle = buttonColor;
-            ctx.fillRect(x, y, width, height);
-            
-            if (iconKey && this.icons[iconKey]) {
-                ctx.drawImage(this.icons[iconKey], x + width / 2 - height / 2, y, height, height); // Draw icon inside the button
-            }
+		const drawVolumeButton = (x, y, width, height, iconKey, action, buttonIndex, isLeft) => {
+			const opacity = this.buttonPressState[buttonIndex]?.opacity || 1.0;
+			ctx.globalAlpha = opacity; // Set button opacity
+			ctx.fillStyle = buttonColor;
 
-            ctx.globalAlpha = 1.0; // Reset opacity
+			// Determine corner radii: rounded only on the outer side
+			const borderRadius = isLeft ? { tl: height / 2, tr: 0, br: 0, bl: height / 2 } 
+										: { tl: 0, tr: height / 2, br: height / 2, bl: 0 };
 
-            // Store button region for click detection and hover effect (for rectangular buttons) 
-            this.buttonRegions.push({ type: 'rect', x, y, width, height, action});
-        };
+			// Draw button with rounded corners on one side
+			ctx.beginPath();
+			ctx.roundRect(x, y, width, height, [borderRadius.tl, borderRadius.tr, borderRadius.br, borderRadius.bl]);
+			ctx.fill();
+
+			if (iconKey && this.icons[iconKey]) {
+				ctx.drawImage(this.icons[iconKey], x + width / 2 - height / 2, y, height, height); // Center icon inside button
+			}
+
+			ctx.globalAlpha = 1.0; // Reset opacity
+
+			// Store button region for click detection and hover effect
+			this.buttonRegions.push({ type: 'rect', x, y, width, height, action });
+		};
 
         const handleCanvasClick = (event) => {
             const rect = canvas.getBoundingClientRect();
@@ -377,17 +405,18 @@ class CCwGTVRemoteCard extends HTMLElement {
             drawButton(centerX + bodyWidth / 4, centerY + yOffset + bodyHeight * 13 / 400, buttonRadius, buttonColor, "input", "input", 12);
         }
 
-        function drawVolumeButtons() {
-            const volumeWidth = bodyWidth / 3;
-            const volumeHeight = bodyHeight * 3 / 80;
-            const yOffset = bodyHeight * 15 / 40; // Adjust Y position
+		function drawVolumeButtons() {
+			const volumeWidth = bodyWidth / 3;
+			const volumeHeight = bodyHeight * 3 / 80;
+			const yOffset = bodyHeight * 15 / 40; // Adjust Y position
 
-            // Volume down (left rectangle)
-            drawVolumeButton(centerX - volumeWidth - bodyWidth / 40, centerY + yOffset, volumeWidth, volumeHeight, "volume_down", "volume_down", 13);
+			// Volume down (left rectangle with rounded left side)
+			drawVolumeButton(centerX - volumeWidth - bodyWidth / 144, centerY + yOffset, volumeWidth, volumeHeight, "volume_down", "volume_down", 13, true);
 
-            // Volume up (right rectangle)
-            drawVolumeButton(centerX + bodyWidth / 40, centerY + yOffset, volumeWidth, volumeHeight, "volume_up", "volume_up", 14);
-        }
+			// Volume up (right rectangle with rounded right side)
+			drawVolumeButton(centerX + bodyWidth / 144, centerY + yOffset, volumeWidth, volumeHeight, "volume_up", "volume_up", 14, false);
+		}
+		
         drawRemoteBody();
         drawDPad(); // Draws D-Pad and enclosing circle
         drawControlButtons(); // Handles Back, Home, Google Assistant, Mute, YouTube, Netflix buttons
