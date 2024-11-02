@@ -59,9 +59,20 @@ resources:
 ### Configure the Remote Card
 Once the card is installed, add it to your **Lovelace** dashboard by creating a custom card with the following configuration:
 
-#### Configuration Options
+#### Add the Custom Card to Your Dashboard
+- **Edit the Dashboard**: Go to Overview and click the three dots in the top right corner, then select Edit Dashboard.
+- **Add a Custom Card**: Click the **Add Card** button (the "+" symbol). Scroll at the bottom to find **Custom cards** and select **Custom: CCwGTV Remote Card**.
+
+![all](examples/custom_card.png)
+
+- Alternatively you can **Add a Manual Card**: Click the **Add Card** button (the "+" symbol). Scroll to find **Manual card** and select it.
+  Configure the Manual Card: in the YAML editor that appears, add the following configuration:
+  ```yaml
+  type: 'custom:ccwgtv-remote-card'
+  ```
+#### Add or modify the Configuration Options
 - **title**: The title of the card.
-- **scale**: Adjust the size of the remote (default: 1.0, range: 0.5 to 1.5).
+- **scale**: Adjust the size of the remote (default: 0.87, range: 0.5 to 1.5).
 - **Button Mappings**: Define the action for each button using the Home Assistant domain, service, and service_data.
 
 #### Available Buttons
@@ -69,6 +80,8 @@ Once the card is installed, add it to your **Lovelace** dashboard by creating a 
 - **Control Buttons**: back, home, assistant, volume_mute, youtube, netflix
 - **Power Buttons**: power, input
 - **Volume**: volume_up, volume_down
+
+![all](examples/custom_card_config.png)
 
 #### How to Use
 Add the card to your Lovelace dashboard with the necessary button mappings.
