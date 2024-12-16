@@ -239,6 +239,28 @@ volume_up:
     entity_id: media_player.living_room_tv
     button: VOLUMEUP
 ```
+Samsung TV integration https://www.home-assistant.io/integrations/samsungtv/ example for calling button commands **MUTE**, **VOLUMEDOWN**, **VOLUMEUP**:
+```yaml
+volume_mute:
+  domain: remote
+  service: send_command
+  service_data:
+    entity_id: remote.samsungtv
+    command: KEY_MUTE
+volume_down:
+  domain: remote
+  service: send_command
+  service_data:
+    entity_id: remote.samsungtv
+    command: KEY_VOLDOWN
+volume_up:
+  domain: remote
+  service: send_command
+  service_data:
+    entity_id: remote.samsungtv
+    command: KEY_VOLUP
+```
+
 ## Development
 To contribute or extend the project:
 
