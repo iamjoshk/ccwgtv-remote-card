@@ -89,7 +89,7 @@ The component will render a Google TV remote control.
 Clicking on a button triggers the corresponding action in your Home Assistant instance.
 
 #### Example of Lovelace Custom Card
-  ```yaml
+```yaml
 type: custom:ccwgtv-remote-card
 title: Chromecast with Google TV Remote
 scale: 1.5
@@ -182,7 +182,7 @@ volume_up:
   service_data:
     entity_id: remote.ccwgtv
     command: VOLUME_UP
-  ```
+```
 
 #### Limitations
 
@@ -193,18 +193,18 @@ volume_up:
 Depending on TV vendor, commands from TV official integration can be used.
 
 LG WebOS integration https://www.home-assistant.io/integrations/webostv/ example for calling button commands **EXIT** or **MENU**:
-  ```yaml
+```yaml
 input:
   domain: webostv
   service: button
   service_data:
     entity_id: media_player.media_player.living_room_tv
     button: EXIT
-  ```
+```
 3. **VOLUME** buttons (MUTE, UP, DOWN) are working only if the Chromecast **Volume Control** is set to Chromecast (Chromecast > **All Settings** > **Remotes & Accessories** > **Set up remote buttons** > **Volume control** > **Chromecast** ).
    
 5. If the Chromecast **Volume Control** is set to a different option (like **TV IR**), commands are not working with TV, but you can set the **VOLUME** buttons **UP** and **DOWN** to control directly the TV via media_player command. Not valid for **MUTE** where media_player command works only if curent state is known.
-  ```yaml
+```yaml
 volume_down:
   domain: media_player
   service: volume_down
@@ -215,11 +215,11 @@ volume_up:
   service:  volume_up
   service_data:
     entity_id: media_player.living_room_tv
-  ```
+```
 6. Alternativelly, commands for TV official integration can be used.
    
 LG WebOS integration https://www.home-assistant.io/integrations/webostv/ example for calling button commands **MUTE**, **VOLUMEDOWN**, **VOLUMEUP**:
-  ```yaml
+```yaml
 volume_mute:
   domain: webostv
   service: button
@@ -238,7 +238,7 @@ volume_up:
   service_data:
     entity_id: media_player.living_room_tv
     button: VOLUMEUP
-  ```
+```
 ## Development
 To contribute or extend the project:
 
