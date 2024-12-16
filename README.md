@@ -186,7 +186,7 @@ volume_up:
 
 #### Limitations
 
-1. **ASSISTANT** button on this custom remoe card will open Chromecast **SEARCH** menu, similar as pressing **search** button on Chromecast Voice Remote.
+1. **ASSISTANT** button on this custom remote card will open Chromecast **SEARCH** menu, similar as pressing **search** button on Chromecast Voice Remote.
 
 2. There is no mapping in Android TV Remote for **INPUT** button. Instead, the above configuration will use media_player command to switch to source LiveTV on corresponding TV entity where Chromecast is connected.
    
