@@ -50,12 +50,17 @@ class CCwGTVRemoteCard extends HTMLElement {
             }
 
             /* Add more styles as needed for buttons, etc. */
+            :host {
+                display: block;
+                --grid-column-count: 2;
+                grid-column: span var(--grid-column-count, 2);
+            }
         `;
     }
 
     preloadIcons() {
         this.icons = {};
-        const iconPaths = {
+        const defaultIconPaths = {
             "up": "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/menu-up.svg",
             "down": "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/menu-down.svg",
             "left": "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/menu-left.svg",
@@ -72,6 +77,8 @@ class CCwGTVRemoteCard extends HTMLElement {
             "volume_down": "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/volume-minus.svg",
             "volume_up": "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/volume-plus.svg"
         };
+
+        const iconPaths = { ...defaultIconPaths, ...(this.config.icons || {}) };
 
         const promises = Object.keys(iconPaths).map(key => {
             return new Promise((resolve, reject) => {
@@ -96,7 +103,18 @@ class CCwGTVRemoteCard extends HTMLElement {
 
     // Method to return default configuration (optional)
     static getStubConfig() {
-        return { title: "CCwGTV Remote", scale: 0.87, actions: "add below as per documentation" };
+        return {
+            title: "CCwGTV Remote",
+            scale: 0.87,
+            icons: {
+                youtube: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/youtube.svg",
+                netflix: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/netflix.svg"
+            },
+            layout_options: {
+                grid_columns: 2,
+                grid_rows: 6
+            }
+        };
     }
 
     setConfig(config) {
@@ -432,9 +450,72 @@ class CCwGTVRemoteCard extends HTMLElement {
         }
     }
 
-    getCardSize() {
-        return 6;
+    static get layoutOptions() {
+        return {
+            'grid-width': 2,
+            'grid-height': 6
+        };
+    }
+
+    static getConfigElement() {
+        return document.createElement('ccwgtv-remote-card-editor');
     }
 }
+
+class CCwGTVRemoteCardEditor extends HTMLElement {
+    setConfig(config) {
+        this._config = config;
+        this.requestUpdate();
+    }
+
+    get _icons() {
+        return this._config.icons || {};
+    }
+
+    configChanged(ev) {
+        if (!this._config) {
+            return;
+        }
+
+        const target = ev.target;
+        if (target.configValue) {
+            if (target.configValue.includes('.')) {
+                // Handle nested properties (for icons)
+                const [parent, child] = target.configValue.split('.');
+                this._config[parent] = this._config[parent] || {};
+                this._config[parent][child] = target.value;
+            } else {
+                this._config[target.configValue] = target.value;
+            }
+        }
+        
+        this.dispatchEvent(new CustomEvent('config-changed', { detail: { config: this._config } }));
+    }
+
+    render() {
+        if (!this._config) {
+            return '';
+        }
+
+        return html`
+            <div class="card-config">
+                <ha-textfield
+                    label="Netflix Icon URL"
+                    .value="${this._icons.netflix || ''}"
+                    .configValue=${'icons.netflix'}
+                    @input="${this.configChanged}"
+                ></ha-textfield>
+                <ha-textfield
+                    label="YouTube Icon URL"
+                    .value="${this._icons.youtube || ''}"
+                    .configValue=${'icons.youtube'}
+                    @input="${this.configChanged}"
+                ></ha-textfield>
+            </div>
+        `;
+    }
+}
+
+customElements.define('ccwgtv-remote-card-editor', CCwGTVRemoteCardEditor);
 
 customElements.define('ccwgtv-remote-card', CCwGTVRemoteCard);
