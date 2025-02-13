@@ -1,3 +1,22 @@
+## Forked Repo
++ Adds configurable icons and sections layout in the UI
++ Adds haptic feedback to button presses
+
+
+# CCwGTV Remote Card
+
+A custom remote control card for Chromecast with Google TV in Home Assistant
+
+## Installation
+
+1. Install via HACS
+2. Add the following to your Lovelace resources:
+```yaml
+url: /hacsfiles/ccwgtv-remote-card/ccwgtv-remote-card.js
+type: module
+```
+3. Add the card to your dashboard
+
 # Chromecast with Google TV Remote Card
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 [![buymeacoffee_badge](https://img.shields.io/badge/Donate-buymeacoffe-ff813f?style=flat)](https://www.buymeacoffee.com/schilea)

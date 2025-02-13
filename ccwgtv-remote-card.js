@@ -179,9 +179,19 @@ class CCwGTVRemoteCard extends LitElement {
             console.log(`Button pressed: ${action}`);
             this._hass.callService(this.config[action].domain, this.config[action].service, this.config[action].service_data || {});
 
+            // Trigger haptic feedback
+            this.fireHaptic('light');
+
             // Trigger fading effect for the clicked button
             this.triggerButtonFade(buttonIndex);
         }
+    }
+
+    // Trigger haptic feedback
+    fireHaptic(type) {
+        const event = new Event('haptic');
+        event.detail = type;
+        window.dispatchEvent(event);
     }
 
     // Trigger fading effect on a button
