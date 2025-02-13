@@ -1,3 +1,5 @@
+import { LitElement, html, css } from 'https://unpkg.com/lit-element@2.5.1/lit-element.js?module';
+
 window.customCards = window.customCards || [];
 window.customCards.push({
     type: "ccwgtv-remote-card",
@@ -6,14 +8,11 @@ window.customCards.push({
     preview: true, // Optional: Enables a preview in the card picker
 });
 
-class CCwGTVRemoteCard extends HTMLElement {
+class CCwGTVRemoteCard extends LitElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
         this.styleElement = document.createElement('style');
-        this.shadowRoot.appendChild(this.styleElement);
         this.applyStyles(); // Apply styles during construction
-        this.preloadIcons(); // Preload icons
 
         this.buttonPressState = {}; // Track state for each button's fading effect
     }
@@ -43,6 +42,9 @@ class CCwGTVRemoteCard extends HTMLElement {
             .content {
                 padding: 5px;
                 position: relative;
+                display: flex !important;
+                justify-content: center; /* Center the canvas horizontally */
+                align-items: center; /* Center the canvas vertically */
             }
 
             .canvas {
@@ -50,11 +52,6 @@ class CCwGTVRemoteCard extends HTMLElement {
             }
 
             /* Add more styles as needed for buttons, etc. */
-            :host {
-                display: block;
-                --grid-column-count: 2;
-                grid-column: span var(--grid-column-count, 2);
-            }
         `;
     }
 
@@ -107,8 +104,21 @@ class CCwGTVRemoteCard extends HTMLElement {
             title: "CCwGTV Remote",
             scale: 0.87,
             icons: {
+                up: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/menu-up.svg",
+                down: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/menu-down.svg",
+                left: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/menu-left.svg",
+                right: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/menu-right.svg",
+                select: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/circle-small.svg",
+                back: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/arrow-left.svg",
+                assistant: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/google-assistant.svg",
+                home: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/home.svg",
+                volume_mute: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/volume-off.svg",
                 youtube: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/youtube.svg",
-                netflix: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/netflix.svg"
+                netflix: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/netflix.svg",
+                power: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/power.svg",
+                input: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/import.svg",
+                volume_down: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/volume-minus.svg",
+                volume_up: "https://cdn.jsdelivr.net/npm/@mdi/svg/svg/volume-plus.svg"
             },
             layout_options: {
                 grid_columns: 2,
@@ -145,6 +155,7 @@ class CCwGTVRemoteCard extends HTMLElement {
 
         this.content.innerHTML = '';
         this.buttonRegions = [];
+        this.preloadIcons(); // Preload icons after config is set
         this.drawRemoteControl();
     }
 
@@ -462,21 +473,19 @@ class CCwGTVRemoteCard extends HTMLElement {
     }
 }
 
-class CCwGTVRemoteCardEditor extends HTMLElement {
+class CCwGTVRemoteCardEditor extends LitElement {
     setConfig(config) {
         this._config = config;
         this.requestUpdate();
     }
 
     get _icons() {
-        return this._config.icons || {};
+        return this._config?.icons || {};
     }
 
     configChanged(ev) {
-        if (!this._config) {
-            return;
-        }
-
+        if (!this._config) return;
+        
         const target = ev.target;
         if (target.configValue) {
             if (target.configValue.includes('.')) {
@@ -488,34 +497,155 @@ class CCwGTVRemoteCardEditor extends HTMLElement {
                 this._config[target.configValue] = target.value;
             }
         }
-        
         this.dispatchEvent(new CustomEvent('config-changed', { detail: { config: this._config } }));
     }
 
     render() {
         if (!this._config) {
-            return '';
+            return html``;
+        } else {
+            return html`
+                <div class="card-config">
+                    <div>
+                        <h4>Up Icon URL</h4>
+                        <ha-textfield
+                            label="Up Icon URL"
+                            .value="${this._icons.up || ''}"
+                            .configValue=${'icons.up'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Down Icon URL</h4>
+                        <ha-textfield
+                            label="Down Icon URL"
+                            .value="${this._icons.down || ''}"
+                            .configValue=${'icons.down'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Left Icon URL</h4>
+                        <ha-textfield
+                            label="Left Icon URL"
+                            .value="${this._icons.left || ''}"
+                            .configValue=${'icons.left'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Right Icon URL</h4>
+                        <ha-textfield
+                            label="Right Icon URL"
+                            .value="${this._icons.right || ''}"
+                            .configValue=${'icons.right'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Select Icon URL</h4>
+                        <ha-textfield
+                            label="Select Icon URL"
+                            .value="${this._icons.select || ''}"
+                            .configValue=${'icons.select'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Back Icon URL</h4>
+                        <ha-textfield
+                            label="Back Icon URL"
+                            .value="${this._icons.back || ''}"
+                            .configValue=${'icons.back'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Assistant Icon URL</h4>
+                        <ha-textfield
+                            label="Assistant Icon URL"
+                            .value="${this._icons.assistant || ''}"
+                            .configValue=${'icons.assistant'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Home Icon URL</h4>
+                        <ha-textfield
+                            label="Home Icon URL"
+                            .value="${this._icons.home || ''}"
+                            .configValue=${'icons.home'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Volume Mute Icon URL</h4>
+                        <ha-textfield
+                            label="Volume Mute Icon URL"
+                            .value="${this._icons.volume_mute || ''}"
+                            .configValue=${'icons.volume_mute'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Netflix Icon URL</h4>
+                        <ha-textfield
+                            label="Netflix Icon URL"
+                            .value="${this._icons.netflix || ''}"
+                            .configValue=${'icons.netflix'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>YouTube Icon URL</h4>
+                        <ha-textfield
+                            label="YouTube Icon URL"
+                            .value="${this._icons.youtube || ''}"
+                            .configValue=${'icons.youtube'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Power Icon URL</h4>
+                        <ha-textfield
+                            label="Power Icon URL"
+                            .value="${this._icons.power || ''}"
+                            .configValue=${'icons.power'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Input Icon URL</h4>
+                        <ha-textfield
+                            label="Input Icon URL"
+                            .value="${this._icons.input || ''}"
+                            .configValue=${'icons.input'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Volume Down Icon URL</h4>
+                        <ha-textfield
+                            label="Volume Down Icon URL"
+                            .value="${this._icons.volume_down || ''}"
+                            .configValue=${'icons.volume_down'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                    <div>
+                        <h4>Volume Up Icon URL</h4>
+                        <ha-textfield
+                            label="Volume Up Icon URL"
+                            .value="${this._icons.volume_up || ''}"
+                            .configValue=${'icons.volume_up'}
+                            @input="${this.configChanged}"
+                        ></ha-textfield>
+                    </div>
+                </div>
+            `;
         }
-
-        return html`
-            <div class="card-config">
-                <ha-textfield
-                    label="Netflix Icon URL"
-                    .value="${this._icons.netflix || ''}"
-                    .configValue=${'icons.netflix'}
-                    @input="${this.configChanged}"
-                ></ha-textfield>
-                <ha-textfield
-                    label="YouTube Icon URL"
-                    .value="${this._icons.youtube || ''}"
-                    .configValue=${'icons.youtube'}
-                    @input="${this.configChanged}"
-                ></ha-textfield>
-            </div>
-        `;
     }
 }
 
 customElements.define('ccwgtv-remote-card-editor', CCwGTVRemoteCardEditor);
-
 customElements.define('ccwgtv-remote-card', CCwGTVRemoteCard);
